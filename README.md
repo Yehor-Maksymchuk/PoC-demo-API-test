@@ -16,6 +16,6 @@ mvn clean test -pl bdd
 mvn allure:serve -pl api
 ```
 * Allure for bdd module
-* ```
+```
 mvn allure:serve -pl bdd
 ```
