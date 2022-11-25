@@ -1,30 +1,29 @@
 package com.mastercontrol.rc.api.rest;
 
-import com.github.javafaker.Faker;
 import com.mastercontrol.rc.api.dto.AddWorkflowRequest;
 import com.mastercontrol.rc.api.dto.UpdateWorkflowRequest;
-import com.mastercontrol.rc.api.dto.Workflow;
-import com.mastercontrol.rc.api.utils.RequestUtils;
+import com.mastercontrol.rc.api.security.JWTRetriever;
+import com.mastercontrol.rc.api.security.RealJWTRetriever;
+
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import io.restassured.http.Header;
-import io.restassured.internal.filter.FormAuthFilter;
 import io.restassured.response.Response;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
-@PropertySource("classpath:application.properties")
 public class WorkflowApi {
-
-    @Value("${token}")
+    private final String filePath = "C:/Users/jzpeterson/core-platform/PoC-demo-API-test/client-secrets.json";
+    private JWTRetriever jwtRetriever;
     private String token;
+
+    public WorkflowApi() throws Exception {
+        jwtRetriever = new RealJWTRetriever(filePath);
+        token = jwtRetriever.getAccessToken("kyle@mcresearchlabs.net");
+    }
 
     @Step("Create workflow by endpoint :/pcs/workflow/workflow/v1")
     public Response createWorkflow(AddWorkflowRequest requestBody) {
