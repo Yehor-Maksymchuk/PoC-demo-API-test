@@ -24,7 +24,6 @@ public class WorkflowDefinition extends CucumberRunner {
 
     @Given("Prepare create workflow request")
     public void createTestDataForCreateWorkflowRequest() {
-        RestAssured.defaultParser = Parser.JSON;
         createWorkflow = AddWorkflowRequest.builder()
                 .withAppId(RequestUtils.getFaker().name().name())
                 .withName(RequestUtils.getFaker().funnyName().name())
