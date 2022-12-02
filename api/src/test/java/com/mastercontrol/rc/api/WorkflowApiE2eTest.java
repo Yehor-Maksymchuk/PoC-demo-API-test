@@ -80,7 +80,7 @@ public class WorkflowApiE2eTest {
     @Test
     @DisplayName("Can update workflow by id")
     public void testCanUpdateWorkflow() {
-        System.out.println(workflowId);
+
         var updatedRequest = UpdateWorkflowRequest.builder()
                 .withName("MY_NEW_NAME")
                 .withDescription("MY_NEW_DESCRIPTION")
@@ -90,5 +90,7 @@ public class WorkflowApiE2eTest {
                 .updateWorkflow(workflowId, updatedRequest).as(AddWorkflowResponse.class).getWorkflow();
 
         Assertions.assertThat(updatedWorkFlow).isNotNull();
+        Assertions.assertThat(updatedWorkFlow)
+                .hasFieldOrPropertyWithValue("name", updatedRequest.getName());
     }
 }

@@ -1,4 +1,4 @@
-Feature: Create Workflow
+Feature: CRU Workflow
 
   Scenario: Create workflow with correct data
     Given Prepare create workflow request

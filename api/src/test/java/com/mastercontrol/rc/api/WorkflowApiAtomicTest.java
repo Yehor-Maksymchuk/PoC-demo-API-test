@@ -96,6 +96,9 @@ class WorkflowApiAtomicTest {
                 .updateWorkflow(workflowId, updatedRequest).as(AddWorkflowResponse.class).getWorkflow();
 
         Assertions.assertThat(updatedWorkFlow).isNotNull();
+        Assertions.assertThat(updatedWorkFlow)
+                .hasFieldOrPropertyWithValue("name", updatedRequest.getName());
+
     }
 
 }
