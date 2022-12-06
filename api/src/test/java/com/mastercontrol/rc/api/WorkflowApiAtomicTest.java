@@ -90,6 +90,10 @@ class WorkflowApiAtomicTest {
         var updatedRequest = UpdateWorkflowRequest.builder()
                 .withName("MY_NEW_NAME")
                 .withDescription("MY_NEW_DESCRIPTION")
+                .withDuration(123)
+                .withDurationUnit("")
+                .withNumberingPrefix("")
+                .withType("")
                 .build();
 
         var updatedWorkFlow = workflowApi

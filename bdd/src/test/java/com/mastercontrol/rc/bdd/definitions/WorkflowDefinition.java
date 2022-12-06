@@ -61,4 +61,19 @@ public class WorkflowDefinition extends CucumberRunner {
                 .hasFieldOrPropertyWithValue("name", workflow.getName())
                 .hasFieldOrPropertyWithValue("description", workflow.getDescription());
     }
+
+    @Given("Prepare create workflow request with: {string} ,{string} , {string}")
+    public void prepareCreateWorkflowRequestWith(String arg0, String arg1, String arg2) {
+        createWorkflow = AddWorkflowRequest.builder()
+                .withAppId(arg0)
+                .withName(arg1)
+                .withDescription(arg2)
+                .build();
+    }
+
+
+    @Then("In response we have status: {int}")
+    public void inResponseWeHaveStatusCode(Integer int1) {
+        Assertions.assertThat(workflowResponse.statusCode()).isEqualTo(int1);
+    }
 }

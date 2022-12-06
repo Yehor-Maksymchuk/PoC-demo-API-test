@@ -2,7 +2,6 @@ package com.mastercontrol.rc.api;
 
 import com.mastercontrol.rc.api.dto.*;
 import com.mastercontrol.rc.api.rest.WorkflowApi;
-import com.mastercontrol.rc.api.utils.RequestDtoFabric;
 import com.mastercontrol.rc.api.utils.RequestUtils;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -87,7 +86,9 @@ public class WorkflowApiE2eTest {
                 .build();
 
         var updatedWorkFlow = workflowApi
-                .updateWorkflow(workflowId, updatedRequest).as(AddWorkflowResponse.class).getWorkflow();
+                .updateWorkflow(workflowId, updatedRequest)
+                .as(AddWorkflowResponse.class)
+                .getWorkflow();
 
         Assertions.assertThat(updatedWorkFlow).isNotNull();
         Assertions.assertThat(updatedWorkFlow)
