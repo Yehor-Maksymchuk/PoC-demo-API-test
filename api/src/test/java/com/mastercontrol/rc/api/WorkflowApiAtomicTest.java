@@ -39,6 +39,8 @@ class WorkflowApiAtomicTest {
                 .withDescription(RequestUtils.getFaker().animal().name())
                 .build());
         var workflow = workflowResponse.as(AddWorkflowResponse.class).getWorkflow();
+
+        Assertions.assertThat(workflowResponse.getStatusCode()).isEqualTo(201);
         Assertions.assertThat(workflow).isInstanceOf(Workflow.class)
                 .hasFieldOrProperty("id")
                 .hasFieldOrProperty("appId")
@@ -91,13 +93,13 @@ class WorkflowApiAtomicTest {
                 .withName("MY_NEW_NAME")
                 .withDescription("MY_NEW_DESCRIPTION")
                 .withDuration(123)
-                .withDurationUnit("")
-                .withNumberingPrefix("")
-                .withType("")
+                .withDurationUnit("DAYS")
+                .withNumberingPrefix("12311")
+                .withType("OUT_OF_SPECIFICATION")
                 .build();
 
         var updatedWorkFlow = workflowApi
-                .updateWorkflow(workflowId, updatedRequest).as(AddWorkflowResponse.class).getWorkflow();
+                .updateWorkflow(workflowId, updatedRequest).body().as(AddWorkflowResponse.class).getWorkflow();
 
         Assertions.assertThat(updatedWorkFlow).isNotNull();
         Assertions.assertThat(updatedWorkFlow)

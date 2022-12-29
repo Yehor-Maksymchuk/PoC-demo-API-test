@@ -87,6 +87,7 @@ public class WorkflowApiE2eTest {
 
         var updatedWorkFlow = workflowApi
                 .updateWorkflow(workflowId, updatedRequest)
+                .body()
                 .as(AddWorkflowResponse.class)
                 .getWorkflow();
 
