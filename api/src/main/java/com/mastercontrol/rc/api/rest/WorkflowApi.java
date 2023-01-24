@@ -3,6 +3,9 @@ package com.mastercontrol.rc.api.rest;
 import com.mastercontrol.rc.api.dto.AddWorkflowRequest;
 import com.mastercontrol.rc.api.dto.UpdateWorkflowRequest;
 
+import com.mastercontrol.rc.api.security.JWTRetriever;
+import com.mastercontrol.rc.api.security.RealJWTRetriever;
+
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -16,6 +19,15 @@ import static com.mastercontrol.rc.api.utils.RequestUtils.getToken;
 
 @Component
 public class WorkflowApi {
+
+    private final String filePath = "C:/Users/jzpeterson/core-platform/PoC-demo-API-test/client-secrets.json";
+    private JWTRetriever jwtRetriever;
+    private String token;
+
+    public WorkflowApi() throws Exception {
+        jwtRetriever = new RealJWTRetriever(filePath);
+        token = jwtRetriever.getAccessToken("kyle@mcresearchlabs.net");
+    }
 
     @Step("Create workflow by endpoint :/pcs/workflow/workflow/v1")
     public Response createWorkflow(AddWorkflowRequest requestBody) {

@@ -2,6 +2,8 @@ package com.mastercontrol.rc.api;
 
 import com.mastercontrol.rc.api.dto.*;
 import com.mastercontrol.rc.api.rest.WorkflowApi;
+import com.mastercontrol.rc.api.security.RealJWTRetriever;
+
 import com.mastercontrol.rc.api.utils.RequestUtils;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
