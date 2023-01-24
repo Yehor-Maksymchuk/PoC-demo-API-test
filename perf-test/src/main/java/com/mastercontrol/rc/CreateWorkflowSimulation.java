@@ -8,6 +8,7 @@ import io.gatling.javaapi.core.*;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 import lombok.*;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +17,6 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 public class CreateWorkflowSimulation extends Simulation {
-
     public class AddWorkflowRequest {
         @JsonProperty("appId")
         private String appId;
@@ -29,6 +29,15 @@ public class CreateWorkflowSimulation extends Simulation {
             this.appId = appId;
             this.name = name;
             this.description = description;
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "\"appId\":\"" + appId + '\"' +
+                    ", \"name\":\"" + name + '\"' +
+                    ", \"description\":\"" + description + '\"' +
+                    '}';
         }
     }
 
@@ -48,27 +57,18 @@ public class CreateWorkflowSimulation extends Simulation {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
         headers.put("accept", "application/json");
-        headers.put("User-Agent", "PostmanRuntime/7.29.2");
-        headers.put("Host", "localhost:10007");
+        headers.put("Host", "us-west-2.svc.mastercontrol.technology");
         headers.put("Authorization", "Bearer " + getToken());
         return headers;
     }
 
     {
-
-        AddWorkflowRequest request = new AddWorkflowRequest(
-                "Gatling Test Name",
-                "Gatling Test Description",
-                "Gatling Test appId");
-
-
-
-        HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("http://localhost:10007");
+        HttpProtocolBuilder httpProtocolBuilder = http.baseUrl("https://us-west-2.svc.mastercontrol.technology")
+                .headers(requestHeaders());
 
         createWorkflow = scenario("Create workflow")
                 .exec(http("Create workflow")
                         .post("/pcs/workflow/workflow/v1")
-                        .headers(requestHeaders())
                         .body(CoreDsl.StringBody("""
                                 {
                                   "appId": "#{randomUuid()}",
@@ -77,14 +77,27 @@ public class CreateWorkflowSimulation extends Simulation {
                                 }
                                 """)).asJson()
                         .check(status().is(201))
-                        .check(substring("workflow").find(1).exists())
+                        .check(substring("workflow").exists())
+                        .check(substring("id").exists())
+                        .check(substring("appId").exists())
+                        .check(substring("name").exists())
+                        .check(substring("description").exists())
+                        .check(substring("revision").exists())
+                        .check(substring("status").exists())
+                        .check(substring("type").exists())
+                        .check(substring("numberingPrefix").exists())
+                        .check(substring("duration").exists())
+                        .check(substring("durationUnit").exists())
+                        .check(substring("durationInBusinessDays").exists())
+                        .check(substring("createdDate").exists())
+                        .check(substring("createdBy").exists())
+                        .check(substring("lastModifiedDate").exists())
+                        .check(substring("lastModifiedBy").exists())
                 );
-        setUp(createWorkflow
-                .injectOpen(OpenInjectionStep.atOnceUsers(10))
+        setUp(createWorkflow.injectOpen(
+                        nothingFor(Duration.ofSeconds(4)),
+                        atOnceUsers(10),
+                        rampUsersPerSec(2).to(10).during(Duration.ofSeconds(3)))
                 .protocols(httpProtocolBuilder));
-
-
     }
-
-
 }

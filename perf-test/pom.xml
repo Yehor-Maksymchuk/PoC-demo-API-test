@@ -85,7 +85,7 @@
                 <configuration>
                     <runMultipleSimulations>true</runMultipleSimulations>
                     <includes>
-                        <include>com.mastercontrol.rc.CreateWorkflowSimulation</include>
+                        <include>com.mastercontrol.rc.*</include>
                     </includes>
                 </configuration>
             </plugin>
