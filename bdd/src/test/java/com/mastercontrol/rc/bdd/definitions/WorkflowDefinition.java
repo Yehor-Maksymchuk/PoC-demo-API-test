@@ -11,8 +11,6 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
-import io.restassured.RestAssured;
-import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 
@@ -38,7 +36,7 @@ public class WorkflowDefinition extends CucumberRunner {
 
     @Then("In response we have status code {int}")
     public void verifyStatusCode(int statusCode) {
-        Assertions.assertThat(workflowResponse.statusCode()).isEqualTo(201);
+        Assertions.assertThat(workflowResponse.statusCode()).isEqualTo(statusCode);
     }
 
     @And("Full set of fields")
@@ -62,5 +60,20 @@ public class WorkflowDefinition extends CucumberRunner {
                 .hasFieldOrPropertyWithValue("appId", workflow.getAppId())
                 .hasFieldOrPropertyWithValue("name", workflow.getName())
                 .hasFieldOrPropertyWithValue("description", workflow.getDescription());
+    }
+
+    @Given("Prepare create workflow request with: {string} ,{string} , {string}")
+    public void prepareCreateWorkflowRequestWith(String arg0, String arg1, String arg2) {
+        createWorkflow = AddWorkflowRequest.builder()
+                .withAppId(arg0)
+                .withName(arg1)
+                .withDescription(arg2)
+                .build();
+    }
+
+
+    @Then("In response we have status: {int}")
+    public void inResponseWeHaveStatusCode(Integer int1) {
+        Assertions.assertThat(workflowResponse.statusCode()).isEqualTo(int1);
     }
 }

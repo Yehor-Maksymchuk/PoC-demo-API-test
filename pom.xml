@@ -17,6 +17,7 @@
     <modules>
         <module>api</module>
         <module>bdd</module>
+        <module>perf-test</module>
     </modules>
     <properties>
         <java.version>17</java.version>

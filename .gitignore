@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+bdd/allure-results
+api/allure-results
+
+bdd/src/main/resources/client-secret.json
+api/src/main/resources/client-secret.json
+perf-test/src/main/resources/client-secret.json

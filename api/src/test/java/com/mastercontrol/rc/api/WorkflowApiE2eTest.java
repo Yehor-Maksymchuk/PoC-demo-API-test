@@ -3,6 +3,7 @@ package com.mastercontrol.rc.api;
 import com.mastercontrol.rc.api.dto.*;
 import com.mastercontrol.rc.api.rest.WorkflowApi;
 import com.mastercontrol.rc.api.security.RealJWTRetriever;
+
 import com.mastercontrol.rc.api.utils.RequestUtils;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -80,15 +81,20 @@ public class WorkflowApiE2eTest {
     @Test
     @DisplayName("Can update workflow by id")
     public void testCanUpdateWorkflow() {
-        System.out.println(workflowId);
+
         var updatedRequest = UpdateWorkflowRequest.builder()
                 .withName("MY_NEW_NAME")
                 .withDescription("MY_NEW_DESCRIPTION")
                 .build();
 
         var updatedWorkFlow = workflowApi
-                .updateWorkflow(workflowId, updatedRequest).as(AddWorkflowResponse.class).getWorkflow();
+                .updateWorkflow(workflowId, updatedRequest)
+                .body()
+                .as(AddWorkflowResponse.class)
+                .getWorkflow();
 
         Assertions.assertThat(updatedWorkFlow).isNotNull();
+        Assertions.assertThat(updatedWorkFlow)
+                .hasFieldOrPropertyWithValue("name", updatedRequest.getName());
     }
 }

@@ -2,23 +2,20 @@ package com.mastercontrol.rc.bdd.rest;
 
 import com.mastercontrol.rc.bdd.dto.AddWorkflowRequest;
 import com.mastercontrol.rc.bdd.dto.UpdateWorkflowRequest;
+
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Component
-@PropertySource("classpath:application.properties")
-public class WorkflowApi {
+import static com.mastercontrol.rc.bdd.utils.RequestUtils.getToken;
 
-    @Value("${token}")
-    private String token;
+@Component
+public class WorkflowApi {
 
     @Step("Create workflow by endpoint :/pcs/workflow/workflow/v1")
     public Response createWorkflow(AddWorkflowRequest requestBody) {
@@ -52,7 +49,11 @@ public class WorkflowApi {
         headers.put("accept", "application/json");
         headers.put("User-Agent", "PostmanRuntime/7.29.2");
         headers.put("Host", "localhost:10007");
-        headers.put("Authorization", "Bearer " + token);
+        headers.put("Authorization", "Bearer " + getToken());
         return headers;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getToken());
     }
 }

@@ -2,6 +2,7 @@ package com.mastercontrol.rc.api.rest;
 
 import com.mastercontrol.rc.api.dto.AddWorkflowRequest;
 import com.mastercontrol.rc.api.dto.UpdateWorkflowRequest;
+
 import com.mastercontrol.rc.api.security.JWTRetriever;
 import com.mastercontrol.rc.api.security.RealJWTRetriever;
 
@@ -14,8 +15,11 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.mastercontrol.rc.api.utils.RequestUtils.getToken;
+
 @Component
 public class WorkflowApi {
+
     private final String filePath = "C:/Users/jzpeterson/core-platform/PoC-demo-API-test/client-secrets.json";
     private JWTRetriever jwtRetriever;
     private String token;
@@ -57,7 +61,11 @@ public class WorkflowApi {
         headers.put("accept", "application/json");
         headers.put("User-Agent", "PostmanRuntime/7.29.2");
         headers.put("Host", "localhost:10007");
-        headers.put("Authorization", "Bearer " + token);
+        headers.put("Authorization", "Bearer " + getToken());
         return headers;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getToken());
     }
 }
